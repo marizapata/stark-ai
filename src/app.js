@@ -3,6 +3,7 @@
 ========================== */
 
 import { Home } from "./views/home.js";
+import { Chat } from "./views/chat.js";
 
 /* ==========================
    CONTENEDOR PRINCIPAL
@@ -11,7 +12,29 @@ import { Home } from "./views/home.js";
 const app = document.querySelector("#app");
 
 /* ==========================
-   RENDERIZAR VISTA INICIAL
+   RENDERIZAR VISTA
 ========================== */
 
-app.innerHTML = Home();
+function render(view) {
+  app.innerHTML = view();
+}
+
+/* ==========================
+   INICIAR APLICACIÓN
+========================== */
+
+render(Home);
+
+/* ==========================
+   BOTÓN INICIAR CHAT
+========================== */
+
+const startButton = document.querySelector("#start-chat");
+
+/* ==========================
+   EVENTO DEL BOTÓN
+========================== */
+
+startButton.addEventListener("click", function () {
+  render(Chat);
+});
