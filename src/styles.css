@@ -87,3 +87,77 @@ body {
 .hero button:hover {
   background-color: #5a5a5a;
 }
+
+/* ==========================
+   PANTALLA CHAT
+========================== */
+
+.chat {
+  width: 100%;
+  max-width: 800px;
+  height: 90vh;
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==========================
+   CABECERA
+========================== */
+
+.chat-header {
+  padding: 1rem;
+  border-bottom: 1px solid #30363d;
+}
+
+/* ==========================
+   MENSAJES
+========================== */
+
+.messages {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+/* ==========================
+   MENSAJE IA
+========================== */
+
+.message {
+  max-width: 70%;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+}
+
+.assistant {
+  background-color: #21262d;
+}
+
+/* ==========================
+   FORMULARIO
+========================== */
+
+.chat-form {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  border-top: 1px solid #30363d;
+}
+
+.chat-form input {
+  flex: 1;
+  padding: .9rem;
+  border: none;
+  border-radius: 6px;
+  outline: none;
+}
+
+.chat-form button {
+  padding: .9rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}

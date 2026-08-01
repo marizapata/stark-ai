@@ -17,6 +17,48 @@ const app = document.querySelector("#app");
 
 function render(view) {
   app.innerHTML = view();
+
+  initializeView();
+}
+
+/* ==========================
+   INICIALIZAR VISTA
+========================== */
+
+function initializeView() {
+
+  /* ==========================
+     BOTÓN HOME
+  ========================== */
+
+  const startButton = document.querySelector("#start-chat");
+
+  if (startButton) {
+    startButton.addEventListener("click", function () {
+      render(Chat);
+    });
+  }
+
+  /* ==========================
+     FORMULARIO CHAT
+  ========================== */
+
+  const chatForm = document.querySelector(".chat-form");
+
+  if (chatForm) {
+
+    chatForm.addEventListener("submit", function (event) {
+
+      event.preventDefault();
+
+      const input = document.querySelector("#message-input");
+
+      console.log(input.value);
+
+    });
+
+  }
+
 }
 
 /* ==========================
@@ -24,17 +66,3 @@ function render(view) {
 ========================== */
 
 render(Home);
-
-/* ==========================
-   BOTÓN INICIAR CHAT
-========================== */
-
-const startButton = document.querySelector("#start-chat");
-
-/* ==========================
-   EVENTO DEL BOTÓN
-========================== */
-
-startButton.addEventListener("click", function () {
-  render(Chat);
-});
