@@ -53,7 +53,48 @@ function initializeView() {
 
       const input = document.querySelector("#message-input");
 
-      console.log(input.value);
+      /* ==========================
+         VALIDAR MENSAJE
+      ========================== */
+
+      if (input.value.trim() === "") {
+        return;
+      }
+
+      const messages = document.querySelector(".messages");
+
+      /* ==========================
+         MENSAJE DEL USUARIO
+      ========================== */
+
+      const userMessage = document.createElement("div");
+
+      userMessage.classList.add("message");
+      userMessage.classList.add("user");
+
+      userMessage.textContent = input.value;
+
+      messages.appendChild(userMessage);
+
+      messages.scrollTop = messages.scrollHeight;
+
+      input.value = "";
+
+      /* ==========================
+         MENSAJE DEL ASISTENTE
+      ========================== */
+
+      const assistantMessage = document.createElement("div");
+
+      assistantMessage.classList.add("message");
+      assistantMessage.classList.add("assistant");
+
+      assistantMessage.textContent =
+        "Soy Tony Stark. Aún no estoy conectado con Gemini, pero pronto responderé como un verdadero Avenger.";
+
+      messages.appendChild(assistantMessage);
+
+      messages.scrollTop = messages.scrollHeight;
 
     });
 

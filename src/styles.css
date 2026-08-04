@@ -132,8 +132,16 @@ body {
   border-radius: 10px;
 }
 
-.assistant {
-  background-color: #21262d;
+.message.user {
+  background-color: #2563eb;
+  color: white;
+  margin-left: auto;
+}
+
+.message.assistant {
+  background-color: #2d2d2d;
+  color: white;
+  margin-right: auto;
 }
 
 /* ==========================
