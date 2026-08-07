@@ -4,6 +4,7 @@
 
 import { Home } from "./views/home.js";
 import { Chat } from "./views/chat.js";
+import { About } from "./views/about.js";
 
 /* ==========================
    CONTENEDOR PRINCIPAL
@@ -22,20 +23,83 @@ function render(view) {
 }
 
 /* ==========================
+   NAVEGACIÓN
+========================== */
+
+function navigate(path) {
+
+  history.pushState({}, "", path);
+
+  router();
+
+}
+
+/* ==========================
+   ROUTER
+========================== */
+
+function router() {
+
+  switch (window.location.pathname) {
+
+    case "/":
+      render(Home);
+      break;
+
+    case "/chat":
+      render(Chat);
+      break;
+
+    case "/about":
+      render(About);
+      break;
+
+    default:
+      render(Home);
+
+  }
+
+}
+
+/* ==========================
    INICIALIZAR VISTA
 ========================== */
 
 function initializeView() {
 
   /* ==========================
-     BOTÓN HOME
+     BOTÓN HOME → CHAT
   ========================== */
 
   const startButton = document.querySelector("#start-chat");
 
   if (startButton) {
     startButton.addEventListener("click", function () {
-      render(Chat);
+      navigate("/chat");
+    });
+  }
+
+  /* ==========================
+     BOTÓN HOME → ABOUT
+  ========================== */
+
+  const aboutButton = document.querySelector("#go-about");
+
+  if (aboutButton) {
+    aboutButton.addEventListener("click", function () {
+      navigate("/about");
+    });
+  }
+
+  /* ==========================
+     BOTÓN VOLVER AL HOME
+  ========================== */
+
+  const homeButton = document.querySelector("#go-home");
+
+  if (homeButton) {
+    homeButton.addEventListener("click", function () {
+      navigate("/");
     });
   }
 
@@ -47,7 +111,7 @@ function initializeView() {
 
   if (chatForm) {
 
-    chatForm.addEventListener("submit", function (event) {
+    chatForm.addEventListener("submit", async function (event) {
 
       event.preventDefault();
 
@@ -83,19 +147,45 @@ function initializeView() {
       /* ==========================
          MENSAJE DEL ASISTENTE
       ========================== */
+const assistantMessage = document.createElement("div");
 
-      const assistantMessage = document.createElement("div");
+assistantMessage.classList.add("message");
+assistantMessage.classList.add("assistant");
 
-      assistantMessage.classList.add("message");
-      assistantMessage.classList.add("assistant");
+assistantMessage.textContent = "Pensando...";
 
-      assistantMessage.textContent =
-        "Soy Tony Stark. Aún no estoy conectado con Gemini, pero pronto responderé como un verdadero Avenger.";
+messages.appendChild(assistantMessage);
 
-      messages.appendChild(assistantMessage);
+messages.scrollTop = messages.scrollHeight;
 
-      messages.scrollTop = messages.scrollHeight;
+try {
 
+  const response = await fetch("/api/chat", {
+
+    method: "POST",
+
+    headers: {
+      "Content-Type": "application/json"
+    },
+
+    body: JSON.stringify({
+      message: userMessage.textContent
+    })
+
+  });
+
+  const data = await response.json();
+
+  assistantMessage.textContent = data.reply;
+
+} catch (error) {
+
+  assistantMessage.textContent =
+    "Lo siento, ocurrió un error al comunicarme con Gemini.";
+
+  console.error(error);
+
+}
     });
 
   }
@@ -103,7 +193,13 @@ function initializeView() {
 }
 
 /* ==========================
+   BOTONES DEL NAVEGADOR
+========================== */
+
+window.addEventListener("popstate", router);
+
+/* ==========================
    INICIAR APLICACIÓN
 ========================== */
 
-render(Home);
+router();

@@ -7,7 +7,13 @@ export function Chat() {
     <main class="chat">
 
       <header class="chat-header">
+
+        <button id="go-home">
+          ← Inicio
+        </button>
+
         <h1>🤖 Tony Stark</h1>
+
       </header>
 
       <section class="messages">

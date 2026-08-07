@@ -14,9 +14,17 @@ export function Home() {
           Habla con Tony Stark utilizando Inteligencia Artificial.
         </p>
 
-        <button id="start-chat">
-          Comenzar Chat
-        </button>
+        <div class="home-buttons">
+
+          <button id="start-chat">
+            Comenzar Chat
+          </button>
+
+          <button id="go-about">
+            Sobre el Proyecto
+          </button>
+
+        </div>
 
       </section>
 
