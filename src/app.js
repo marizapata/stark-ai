@@ -1,5 +1,5 @@
 /* ==========================
-   IMPORTAR VISTAS
+IMPORTAR VISTAS
 ========================== */
 
 import { Home } from "./views/home.js";
@@ -7,13 +7,13 @@ import { Chat } from "./views/chat.js";
 import { About } from "./views/about.js";
 
 /* ==========================
-   CONTENEDOR PRINCIPAL
+CONTENEDOR PRINCIPAL
 ========================== */
 
 const app = document.querySelector("#app");
 
 /* ==========================
-   RENDERIZAR VISTA
+RENDERIZAR VISTA
 ========================== */
 
 function render(view) {
@@ -23,7 +23,7 @@ function render(view) {
 }
 
 /* ==========================
-   NAVEGACIÓN
+NAVEGACIÓN
 ========================== */
 
 function navigate(path) {
@@ -35,7 +35,7 @@ function navigate(path) {
 }
 
 /* ==========================
-   ROUTER
+ROUTER
 ========================== */
 
 function router() {
@@ -62,13 +62,13 @@ function router() {
 }
 
 /* ==========================
-   INICIALIZAR VISTA
+INICIALIZAR VISTA
 ========================== */
 
 function initializeView() {
 
   /* ==========================
-     BOTÓN HOME → CHAT
+  BOTÓN HOME → CHAT
   ========================== */
 
   const startButton = document.querySelector("#start-chat");
@@ -80,7 +80,7 @@ function initializeView() {
   }
 
   /* ==========================
-     BOTÓN HOME → ABOUT
+  BOTÓN HOME → ABOUT
   ========================== */
 
   const aboutButton = document.querySelector("#go-about");
@@ -92,7 +92,7 @@ function initializeView() {
   }
 
   /* ==========================
-     BOTÓN VOLVER AL HOME
+  BOTÓN VOLVER AL HOME
   ========================== */
 
   const homeButton = document.querySelector("#go-home");
@@ -104,7 +104,7 @@ function initializeView() {
   }
 
   /* ==========================
-     FORMULARIO CHAT
+  FORMULARIO CHAT
   ========================== */
 
   const chatForm = document.querySelector(".chat-form");
@@ -118,7 +118,7 @@ function initializeView() {
       const input = document.querySelector("#message-input");
 
       /* ==========================
-         VALIDAR MENSAJE
+      VALIDAR MENSAJE
       ========================== */
 
       if (input.value.trim() === "") {
@@ -128,7 +128,7 @@ function initializeView() {
       const messages = document.querySelector(".messages");
 
       /* ==========================
-         MENSAJE DEL USUARIO
+      MENSAJE DEL USUARIO
       ========================== */
 
       const userMessage = document.createElement("div");
@@ -145,47 +145,51 @@ function initializeView() {
       input.value = "";
 
       /* ==========================
-         MENSAJE DEL ASISTENTE
+      MENSAJE DEL ASISTENTE
       ========================== */
-const assistantMessage = document.createElement("div");
 
-assistantMessage.classList.add("message");
-assistantMessage.classList.add("assistant");
+      const assistantMessage = document.createElement("div");
 
-assistantMessage.textContent = "Pensando...";
+      assistantMessage.classList.add("message");
+      assistantMessage.classList.add("assistant");
 
-messages.appendChild(assistantMessage);
+      assistantMessage.textContent = "Pensando...";
 
-messages.scrollTop = messages.scrollHeight;
+      messages.appendChild(assistantMessage);
 
-try {
+      messages.scrollTop = messages.scrollHeight;
 
-  const response = await fetch("/api/chat", {
+      try {
 
-    method: "POST",
+        const response = await fetch("/api/chat", {
 
-    headers: {
-      "Content-Type": "application/json"
-    },
+          method: "POST",
 
-    body: JSON.stringify({
-      message: userMessage.textContent
-    })
+          headers: {
+            "Content-Type": "application/json"
+          },
 
-  });
+          body: JSON.stringify({
+            message: userMessage.textContent
+          })
 
-  const data = await response.json();
+        });
 
-  assistantMessage.textContent = data.reply;
+        const data = await response.json();
 
-} catch (error) {
+        assistantMessage.textContent = data.reply;
 
-  assistantMessage.textContent =
-    "Lo siento, ocurrió un error al comunicarme con Gemini.";
+        messages.scrollTop = messages.scrollHeight;
 
-  console.error(error);
+      } catch (error) {
 
-}
+        assistantMessage.textContent =
+          "Lo siento, ocurrió un error al comunicarme con Gemini.";
+
+        console.error(error);
+
+      }
+
     });
 
   }
@@ -193,13 +197,13 @@ try {
 }
 
 /* ==========================
-   BOTONES DEL NAVEGADOR
+BOTONES DEL NAVEGADOR
 ========================== */
 
 window.addEventListener("popstate", router);
 
 /* ==========================
-   INICIAR APLICACIÓN
+INICIAR APLICACIÓN
 ========================== */
 
 router();

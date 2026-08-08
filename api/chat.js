@@ -33,11 +33,10 @@ export default async function handler(req, res) {
   } catch (error) {
 
     // Errores
-    console.error("========== GEMINI ==========");
     console.error(error);
 
     return res.status(500).json({
-      error: error.message,
+      error: "Error al comunicarse con Gemini.",
     });
 
   }
