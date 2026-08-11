@@ -12,6 +12,7 @@ import { About } from "./views/about.js";
 ========================== */
 
 const app = document.querySelector("#app");
+
 let chatHistory = [];
 
 
@@ -20,9 +21,11 @@ let chatHistory = [];
 ========================== */
 
 function render(view) {
+
   app.innerHTML = view();
 
   initializeView();
+
 }
 
 
@@ -75,7 +78,7 @@ function initializeView() {
 
 
   /* ==========================
-     BOTÓN HOME → CHAT
+     HOME → CHAT
   ========================== */
 
   const startButton = document.querySelector("#start-chat");
@@ -83,14 +86,16 @@ function initializeView() {
   if (startButton) {
 
     startButton.addEventListener("click", function () {
+
       navigate("/chat");
+
     });
 
   }
 
 
   /* ==========================
-     BOTÓN HOME → ABOUT
+     HOME → ABOUT
   ========================== */
 
   const aboutButton = document.querySelector("#go-about");
@@ -98,14 +103,16 @@ function initializeView() {
   if (aboutButton) {
 
     aboutButton.addEventListener("click", function () {
+
       navigate("/about");
+
     });
 
   }
 
 
   /* ==========================
-     BOTÓN VOLVER AL HOME
+     BOTÓN INICIO
   ========================== */
 
   const homeButton = document.querySelector("#go-home");
@@ -113,7 +120,26 @@ function initializeView() {
   if (homeButton) {
 
     homeButton.addEventListener("click", function () {
+
       navigate("/");
+
+    });
+
+  }
+
+
+  /* ==========================
+     BOTÓN CHAT
+  ========================== */
+
+  const chatButton = document.querySelector("#go-chat");
+
+  if (chatButton) {
+
+    chatButton.addEventListener("click", function () {
+
+      navigate("/chat");
+
     });
 
   }
@@ -131,6 +157,7 @@ function initializeView() {
 
       event.preventDefault();
 
+
       const input = document.querySelector("#message-input");
 
 
@@ -139,7 +166,9 @@ function initializeView() {
       ========================== */
 
       if (input.value.trim() === "") {
+
         return;
+
       }
 
 
@@ -161,12 +190,16 @@ function initializeView() {
 
       messages.scrollTop = messages.scrollHeight;
 
+
       input.value = "";
 
 
       chatHistory.push({
+
         role: "user",
+
         content: userMessage.textContent
+
       });
 
 
@@ -186,6 +219,10 @@ function initializeView() {
       messages.scrollTop = messages.scrollHeight;
 
 
+      /* ==========================
+         COMUNICACIÓN CON API
+      ========================== */
+
       try {
 
         const response = await fetch("/api/chat", {
@@ -193,12 +230,17 @@ function initializeView() {
           method: "POST",
 
           headers: {
+
             "Content-Type": "application/json"
+
           },
 
           body: JSON.stringify({
+
             message: userMessage.textContent,
+
             history: chatHistory
+
           })
 
         });
@@ -207,12 +249,19 @@ function initializeView() {
         const data = await response.json();
 
 
+        /* ==========================
+           RESPUESTA EXITOSA
+        ========================== */
+
         assistantMessage.textContent = data.reply;
 
 
         chatHistory.push({
+
           role: "assistant",
+
           content: data.reply
+
         });
 
 
@@ -220,6 +269,11 @@ function initializeView() {
 
 
       } catch (error) {
+
+
+        /* ==========================
+           ERROR
+        ========================== */
 
         assistantMessage.textContent =
           "Lo siento, ocurrió un error al comunicarme con Gemini.";

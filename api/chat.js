@@ -100,8 +100,9 @@ Si no sabes algo, dilo claramente.
         systemInstruction: systemPrompt,
 
         // Limita la cantidad de texto generado
-        maxOutputTokens: 80
+        maxOutputTokens: 150
 
+      
       }
 
     });

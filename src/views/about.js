@@ -4,29 +4,40 @@
 
 export function About() {
   return `
-    <main class="about">
 
-      <section class="about-content">
+    <nav class="main-nav">
 
-        <h1>Sobre Stark AI</h1>
+      <button id="go-home">
+        Inicio
+      </button>
 
-        <p>
-          Stark AI es una aplicación desarrollada como
-          proyecto académico utilizando JavaScript,
-          HTML y CSS.
-        </p>
+      <button id="go-chat">
+        Chat
+      </button>
 
-        <p>
-          El personaje elegido es Tony Stark,
-          inspirado en el universo de Marvel.
-        </p>
+      <button id="go-about">
+        About
+      </button>
 
-        <button id="go-home">
-          Volver al Inicio
-        </button>
+    </nav>
 
-      </section>
 
-    </main>
+    <section class="about-content">
+
+      <h1>Sobre Stark AI</h1>
+
+      <p>
+        Stark AI es una aplicación desarrollada como
+        proyecto académico utilizando JavaScript,
+        HTML y CSS.
+      </p>
+
+      <p>
+        El personaje elegido es Tony Stark,
+        inspirado en el universo de Marvel.
+      </p>
+
+    </section>
+
   `;
 }
