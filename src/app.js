@@ -1,19 +1,22 @@
 /* ==========================
-IMPORTAR VISTAS
+   IMPORTAR VISTAS
 ========================== */
 
 import { Home } from "./views/home.js";
 import { Chat } from "./views/chat.js";
 import { About } from "./views/about.js";
 
+
 /* ==========================
-CONTENEDOR PRINCIPAL
+   CONTENEDOR PRINCIPAL
 ========================== */
 
 const app = document.querySelector("#app");
+let chatHistory = [];
+
 
 /* ==========================
-RENDERIZAR VISTA
+   RENDERIZAR VISTA
 ========================== */
 
 function render(view) {
@@ -22,8 +25,9 @@ function render(view) {
   initializeView();
 }
 
+
 /* ==========================
-NAVEGACIÓN
+   NAVEGACIÓN
 ========================== */
 
 function navigate(path) {
@@ -34,8 +38,9 @@ function navigate(path) {
 
 }
 
+
 /* ==========================
-ROUTER
+   ROUTER
 ========================== */
 
 function router() {
@@ -61,50 +66,61 @@ function router() {
 
 }
 
+
 /* ==========================
-INICIALIZAR VISTA
+   INICIALIZAR VISTA
 ========================== */
 
 function initializeView() {
 
+
   /* ==========================
-  BOTÓN HOME → CHAT
+     BOTÓN HOME → CHAT
   ========================== */
 
   const startButton = document.querySelector("#start-chat");
 
   if (startButton) {
+
     startButton.addEventListener("click", function () {
       navigate("/chat");
     });
+
   }
 
+
   /* ==========================
-  BOTÓN HOME → ABOUT
+     BOTÓN HOME → ABOUT
   ========================== */
 
   const aboutButton = document.querySelector("#go-about");
 
   if (aboutButton) {
+
     aboutButton.addEventListener("click", function () {
       navigate("/about");
     });
+
   }
 
+
   /* ==========================
-  BOTÓN VOLVER AL HOME
+     BOTÓN VOLVER AL HOME
   ========================== */
 
   const homeButton = document.querySelector("#go-home");
 
   if (homeButton) {
+
     homeButton.addEventListener("click", function () {
       navigate("/");
     });
+
   }
 
+
   /* ==========================
-  FORMULARIO CHAT
+     FORMULARIO CHAT
   ========================== */
 
   const chatForm = document.querySelector(".chat-form");
@@ -117,18 +133,21 @@ function initializeView() {
 
       const input = document.querySelector("#message-input");
 
+
       /* ==========================
-      VALIDAR MENSAJE
+         VALIDAR MENSAJE
       ========================== */
 
       if (input.value.trim() === "") {
         return;
       }
 
+
       const messages = document.querySelector(".messages");
 
+
       /* ==========================
-      MENSAJE DEL USUARIO
+         MENSAJE DEL USUARIO
       ========================== */
 
       const userMessage = document.createElement("div");
@@ -144,8 +163,15 @@ function initializeView() {
 
       input.value = "";
 
+
+      chatHistory.push({
+        role: "user",
+        content: userMessage.textContent
+      });
+
+
       /* ==========================
-      MENSAJE DEL ASISTENTE
+         MENSAJE DEL ASISTENTE
       ========================== */
 
       const assistantMessage = document.createElement("div");
@@ -159,6 +185,7 @@ function initializeView() {
 
       messages.scrollTop = messages.scrollHeight;
 
+
       try {
 
         const response = await fetch("/api/chat", {
@@ -170,16 +197,27 @@ function initializeView() {
           },
 
           body: JSON.stringify({
-            message: userMessage.textContent
+            message: userMessage.textContent,
+            history: chatHistory
           })
 
         });
 
+
         const data = await response.json();
+
 
         assistantMessage.textContent = data.reply;
 
+
+        chatHistory.push({
+          role: "assistant",
+          content: data.reply
+        });
+
+
         messages.scrollTop = messages.scrollHeight;
+
 
       } catch (error) {
 
@@ -196,14 +234,16 @@ function initializeView() {
 
 }
 
+
 /* ==========================
-BOTONES DEL NAVEGADOR
+   BOTONES DEL NAVEGADOR
 ========================== */
 
 window.addEventListener("popstate", router);
 
+
 /* ==========================
-INICIAR APLICACIÓN
+   INICIAR APLICACIÓN
 ========================== */
 
 router();
