@@ -1,29 +1,22 @@
 import { GoogleGenAI } from "@google/genai";
 
-
 const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY
 });
 
-
 export default async function handler(req, res) {
-
 
   // ==========================
   // VALIDAR MÉTODO
   // ==========================
 
   if (req.method !== "POST") {
-
     return res.status(405).json({
       error: "Método no permitido"
     });
-
   }
 
-
   try {
-
 
     // ==========================
     // RECIBIR DATOS
@@ -31,13 +24,10 @@ export default async function handler(req, res) {
 
     const { message, history = [] } = req.body;
 
-
     if (!message || !message.trim()) {
-
       return res.status(400).json({
         error: "El mensaje está vacío"
       });
-
     }
 
 
@@ -60,29 +50,52 @@ Si no sabes algo, dilo claramente.
 
 
     // ==========================
-    // OPTIMIZACIÓN DE HISTORIAL
+    // LIMPIAR HISTORIAL
     // ==========================
 
-    const limitedHistory = history.slice(-8);
+    const limitedHistory = Array.isArray(history)
+      ? history.slice(-8)
+      : [];
 
 
     // ==========================
-    // CONVERTIR HISTORIAL
+    // CONVERTIR Y VALIDAR HISTORIAL
     // ==========================
 
-    const contents = limitedHistory.map((item) => ({
+    const contents = limitedHistory
+      .filter((item) => {
+        return (
+          item &&
+          typeof item.content === "string" &&
+          item.content.trim() !== ""
+        );
+      })
+      .map((item) => ({
+        role: item.role === "assistant"
+          ? "model"
+          : "user",
 
-      role: item.role === "assistant"
-        ? "model"
-        : "user",
+        parts: [
+          {
+            text: item.content.trim()
+          }
+        ]
+      }));
+
+
+    // ==========================
+    // AGREGAR MENSAJE ACTUAL
+    // ==========================
+
+    contents.push({
+      role: "user",
 
       parts: [
         {
-          text: item.content
+          text: message.trim()
         }
       ]
-
-    }));
+    });
 
 
     // ==========================
@@ -99,28 +112,42 @@ Si no sabes algo, dilo claramente.
 
         systemInstruction: systemPrompt,
 
-        // Limita la cantidad de texto generado
         maxOutputTokens: 150
 
-      
       }
 
     });
 
 
     // ==========================
-    // RESPUESTA
+    // OBTENER RESPUESTA
+    // ==========================
+
+    const reply = response.text?.trim();
+
+
+    // ==========================
+    // VALIDAR RESPUESTA
+    // ==========================
+
+    if (!reply) {
+
+      return res.status(502).json({
+        error: "Gemini no devolvió una respuesta válida."
+      });
+
+    }
+
+
+    // ==========================
+    // RESPUESTA EXITOSA
     // ==========================
 
     return res.status(200).json({
-
-      reply: response.text
-
+      reply
     });
 
-
   } catch (error) {
-
 
     console.error("===== ERROR GEMINI =====");
     console.error(error);
@@ -135,7 +162,7 @@ Si no sabes algo, dilo claramente.
       return res.status(429).json({
 
         error:
-          "Demasiadas solicitudes. Espera unos segundos e inténtalo nuevamente."
+          "Gemini alcanzó temporalmente el límite de solicitudes. Espera unos segundos e inténtalo nuevamente."
 
       });
 
