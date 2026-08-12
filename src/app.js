@@ -6,6 +6,12 @@ import { Home } from "./views/home.js";
 import { Chat } from "./views/chat.js";
 import { About } from "./views/about.js";
 
+import {
+  isValidMessage,
+  createMessage,
+  limitHistory
+} from "./utils.js";
+
 
 /* ==========================
    CONTENEDOR PRINCIPAL
@@ -210,11 +216,11 @@ function initializeView() {
          VALIDAR MENSAJE
       ========================== */
 
-      if (input.value.trim() === "") {
+      if (!isValidMessage(input.value)) {
 
-        return;
+  return;
 
-      }
+}
 
 
       const messages = document.querySelector(".messages");
@@ -239,13 +245,12 @@ function initializeView() {
       input.value = "";
 
 
-      chatHistory.push({
-
-        role: "user",
-
-        content: userMessage.textContent
-
-      });
+      chatHistory.push(
+  createMessage(
+    "user",
+    userMessage.textContent
+  )
+);
 
 
       /* ==========================
@@ -284,7 +289,7 @@ function initializeView() {
 
             message: userMessage.textContent,
 
-            history: chatHistory
+            history: limitHistory(chatHistory)
 
           })
 
@@ -301,13 +306,12 @@ function initializeView() {
         assistantMessage.textContent = data.reply;
 
 
-        chatHistory.push({
-
-          role: "assistant",
-
-          content: data.reply
-
-        });
+        chatHistory.push(
+  createMessage(
+    "assistant",
+    data.reply
+  )
+);
 
 
         messages.scrollTop = messages.scrollHeight;
