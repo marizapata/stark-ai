@@ -4,30 +4,45 @@
 
 export function Home() {
   return `
-    <main class="home">
 
-      <section class="hero">
+    <nav class="main-nav">
 
-        <h1>STARK AI</h1>
+      <button id="go-home">
+        Inicio
+      </button>
 
-        <p>
-          Habla con Tony Stark utilizando Inteligencia Artificial.
-        </p>
+      <button id="go-chat">
+        Chat
+      </button>
 
-        <div class="home-buttons">
+      <button id="go-about-nav">
+        About
+      </button>
 
-          <button id="start-chat">
-            Comenzar Chat
-          </button>
+    </nav>
 
-          <button id="go-about">
-            Sobre el Proyecto
-          </button>
 
-        </div>
+    <section class="hero">
 
-      </section>
+      <h1>STARK AI</h1>
 
-    </main>
+      <p>
+        Habla con Tony Stark utilizando Inteligencia Artificial.
+      </p>
+
+      <div class="home-buttons">
+
+        <button id="start-chat">
+          Comenzar Chat
+        </button>
+
+        <button id="go-about">
+          Sobre el Proyecto
+        </button>
+
+      </div>
+
+    </section>
+
   `;
 }
