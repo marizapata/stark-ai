@@ -104,7 +104,7 @@ Si no sabes algo, dilo claramente.
 
     const response = await ai.models.generateContent({
 
-      model: "gemini-flash-latest",
+      model: "gemini-3.5-flash-lite",
 
       contents,
 

@@ -26,6 +26,8 @@ function render(view) {
 
   initializeView();
 
+  restoreChatHistory();
+
 }
 
 
@@ -34,6 +36,10 @@ function render(view) {
 ========================== */
 
 function navigate(path) {
+
+  if (window.location.pathname === path) {
+    return;
+  }
 
   history.pushState({}, "", path);
 
@@ -66,6 +72,45 @@ function router() {
       render(Home);
 
   }
+
+}
+
+
+/* ==========================
+   RESTAURAR HISTORIAL
+========================== */
+
+function restoreChatHistory() {
+
+  const messages = document.querySelector(".messages");
+
+  if (!messages) {
+    return;
+  }
+
+  chatHistory.forEach((item) => {
+
+    const message = document.createElement("div");
+
+    message.classList.add("message");
+
+    if (item.role === "user") {
+
+      message.classList.add("user");
+
+    } else {
+
+      message.classList.add("assistant");
+
+    }
+
+    message.textContent = item.content;
+
+    messages.appendChild(message);
+
+  });
+
+  messages.scrollTop = messages.scrollHeight;
 
 }
 

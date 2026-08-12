@@ -5,6 +5,14 @@
       "destination": "/src/index.html"
     },
     {
+      "source": "/chat",
+      "destination": "/src/index.html"
+    },
+    {
+      "source": "/about",
+      "destination": "/src/index.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/src/$1"
     }
